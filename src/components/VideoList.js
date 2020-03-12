@@ -1,5 +1,5 @@
-import React from 'react';
-import './../App.css';
+import React from "react";
+import "./../App.css";
 
 function VideoList(props) {
   const videoItems = props.videos.map((video, id) => {
@@ -23,7 +23,7 @@ function VideoList(props) {
               onClick={() => props.playListData(video)}
               className="add-button"
             >
-              Add
+              <i className="fa fa-plus" aria-hidden="true"></i>
             </span>
           </div>
         </div>
@@ -31,9 +31,11 @@ function VideoList(props) {
     );
   });
   return (
-    <div className="col-md-4 list-container">
-      <h4 style={{ textAlign: 'center' }}>Search Result</h4>
-      <ul className="list-group">{videoItems}</ul>
+    <div className=" list-container" style={{ padding: 10 }}>
+      {/* <h4 style={{ textAlign: "center" }}>Search Result</h4> */}
+      <ul className="list-group" style={{ margin: 5 }}>
+        {videoItems}
+      </ul>
     </div>
   );
 }

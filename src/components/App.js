@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import _ from 'lodash';
-import Searchbar from './Searchbar';
-import VideoDetails from './VideoDetails';
-import VideoList from './VideoList';
-import PlayList from './PlayList';
-import { URL } from '../constants/EndPoints';
-import { API_KEY } from '../constants/EndPoints';
-import './../App.css';
+import React, { Component } from "react";
+import axios from "axios";
+import _ from "lodash";
+import Searchbar from "./Searchbar";
+import VideoDetails from "./VideoDetails";
+import VideoList from "./VideoList";
+import PlayList from "./PlayList";
+import { URL } from "../constants/EndPoints";
+import { API_KEY, VEDIO_URL, INITIAL_URL } from "../constants/EndPoints";
+import "./../App.css";
 
 class App extends Component {
   constructor(props) {
@@ -15,23 +15,32 @@ class App extends Component {
     this.state = {
       videos: [],
       selectedVideo: null,
-      playList: []
+      playList: [],
+      pageInfo: {}
     };
-    this.videoSearch('saberz');
+    this.videoSearch("saberz");
   }
 
+  // componentDidMount = () => {
+  //   axios
+  //     .get(INITIAL_URL)
+  //     .then(res => console.log(res, "res"))
+  //     .catch(err => console.log(err, "err"));
+  // };
   videoSearch = async termFromSearchBar => {
     const response = await axios.get(URL, {
       params: {
-        part: 'snippet',
+        part: "snippet",
         maxResults: 10,
         key: API_KEY,
         q: termFromSearchBar
       }
     });
+    console.log(response, "response");
     this.setState({
       videos: response.data.items,
-      selectedVideo: response.data.items[0]
+      selectedVideo: response.data.items[0],
+      pageInfo: response.data
     });
   };
 
@@ -76,27 +85,31 @@ class App extends Component {
     const videoSearchDebounce = _.debounce(term => {
       this.videoSearch(term);
     }, 300);
+
     return (
       <div className="App">
         <Searchbar onSearchTermChange={videoSearchDebounce} />
-        <VideoDetails
-          selectedVideo={this.state.selectedVideo}
-          playList={this.state.playList}
-        />
-        <PlayList
-          data={this.state.playList}
-          loading={this.state.loading}
-          onVideoSelect={selectedVideo => this.setState({ selectedVideo })}
-          onVideoRemove={id => this.handleRemove(id)}
-          handleUpward={id => this.handleUpward(id)}
-          handleDownWard={id => this.handleDownward(id)}
-        />
-
-        <VideoList
-          videos={this.state.videos}
-          // onVideoSelect={selectedVideo => this.setState({ selectedVideo })}
-          playListData={video => this.handlePlayList(video)}
-        />
+        <div>
+          <VideoDetails
+            selectedVideo={this.state.selectedVideo}
+            playList={this.state.playList}
+          />
+          <PlayList
+            data={this.state.playList}
+            loading={this.state.loading}
+            onVideoSelect={selectedVideo => this.setState({ selectedVideo })}
+            onVideoRemove={id => this.handleRemove(id)}
+            handleUpward={id => this.handleUpward(id)}
+            handleDownWard={id => this.handleDownward(id)}
+          />
+        </div>
+        <div style={{ marginTop: 5, padding: 5 }}>
+          <VideoList
+            videos={this.state.videos}
+            // onVideoSelect={selectedVideo => this.setState({ selectedVideo })}
+            playListData={video => this.handlePlayList(video)}
+          />
+        </div>
       </div>
     );
   }

@@ -1,7 +1,8 @@
-import React from 'react';
-import './../App.css';
+import React from "react";
+import "./../App.css";
 
 function PlayList(props) {
+  console.log(props.data[0], "PlayList");
   const PlayListItems = props.data.map((video, id) => {
     return (
       <li
@@ -21,7 +22,7 @@ function PlayList(props) {
             <div className="media-heading">{video.snippet.title}</div>
             <div className="media-icons">
               <span onClick={() => props.onVideoRemove(video.etag)}>
-                <i className="fa fa-trash-o" style={{ color: 'red' }}></i>
+                <i className="fa fa-trash-o" style={{ color: "red" }}></i>
               </span>
               <span onClick={() => props.handleUpward(id)}>
                 <i className="fa fa-arrow-up"></i>
@@ -31,14 +32,15 @@ function PlayList(props) {
               </span>
             </div>
           </div>
+          {/* <h6>{props.snippet.channelTitle}</h6> */}
         </div>
       </li>
     );
   });
 
   return (
-    <div className="col-md-4 list-container">
-      <h4 style={{ textAlign: 'center' }}>My PlayList</h4>
+    <div className="col-md-4 list-container" style={{ padding: 5 }}>
+      {/* <h4 style={{ textAlign: 'center' }}>My PlayList</h4> */}
       {props.data.length !== 0 ? (
         <ul className="list-group">{PlayListItems}</ul>
       ) : (

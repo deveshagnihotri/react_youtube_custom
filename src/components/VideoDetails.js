@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 function VideoDetails({ selectedVideo }) {
   if (!selectedVideo) {
@@ -6,8 +6,8 @@ function VideoDetails({ selectedVideo }) {
   }
 
   const videoId = selectedVideo.id.videoId;
-  const url = `https://www.youtube.com/embed/${videoId}/?&loop=1&playlist=`;
-
+  const url = `https://www.youtube.com/embed/${videoId}`;
+  console.log({ selectedVideo }, "selected video");
   return (
     <div className="video-detail col-md-8">
       <div className="embed-responsive embed-responsive-16by9">
@@ -16,6 +16,9 @@ function VideoDetails({ selectedVideo }) {
           src={url}
           title="youtube"
         ></iframe>
+      </div>
+      <div>
+        <h5>{selectedVideo.snippet.title}</h5>
       </div>
     </div>
   );
